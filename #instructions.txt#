@@ -98,3 +98,18 @@ venv
 git init
 git add .
 git commit -m "init"
+git remote add origin https://github.com/pranav-gokhale/HerokuDBTesting.git
+git push -u origin master
+
+pip install flask-sqlalchemy psycopg2
+pip freeze > requirements.txt
+heroku create
+heroku addons:add heroku-postgresql:dev
+heroku pg:promote HEROKU_POSTGRESQL_COLOR
+
+git push heroku master
+
+heroku run python
+>> from app import db
+>> db.create_all()
+>> quit()
