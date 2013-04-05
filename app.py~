@@ -1,14 +1,10 @@
-#testing!                                                                                    
 import os
-
 from flask import Flask,  request, redirect, url_for, render_template
-from flask import render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
-
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -18,22 +14,14 @@ class User(db.Model):
     address = db.Column(db.String(900))
     isAuthenticated = db.Column(db.Boolean())
     email = db.Column(db.String(80))
-
-#    id = db.Column(db.Integer, primary_key=True)                                            
-#    name = db.Column(db.String(80))                                                         
-#    email = db.Column(db.String(120))                                                       
-#    email = db.Column(db.String(120), unique=True)                                          
-
     def __init__(self, firstName, lastName, address, isAuthenticated, email):
         self.firstName = firstName
         self.lastName = lastName
         self.address = address
         self.isAuthenticated = isAuthenticated
         self.email = email
-
     def __repr__(self):
         return '<Name %r>' % self.name
-
 
 @app.route('/')
 def home():
@@ -44,30 +32,17 @@ def home():
         entries = entries + "address: " + row.address + '\n'
         entries = entries + "is authenticated: " + str(row.isAuthenticated) + '\n'
         entries = entries + "email: " + row.email + '\n\n\n'
-
-    #user = User("39cody", "39cody@example.com")                                             
-    #db.session.add(user)                                                                    
-    #db.session.commit()                                                                     
     return entries
-#    return render_template('index.html', entries=entries)                                   
-
 
 @app.route('/new', methods=['GET', 'POST'])
 def submit():
     if request.method == 'POST':
         user = User(request.form['firstname'], request.form['lastname'], request.form['addre\
 ss'], False, request.form['email'])
-#        return request.form['firstname']                                                    
         db.session.add(user)
         db.session.commit()
         return redirect(url_for('home'))
     return render_template('form.html')
-
-@app.route('/robots.txt')
-def robots():
-    res = app.make_response('User-agent: *\nAllow: /')
-    res.mimetype = 'text/plain'
-    return res
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))

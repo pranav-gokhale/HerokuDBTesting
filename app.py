@@ -2,26 +2,29 @@ import os
 from flask import Flask,  request, redirect, url_for, render_template
 from flask.ext.sqlalchemy import SQLAlchemy
 
+#
+from models import User
+
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 
-class User(db.Model):
-    __tablename__ = 'users'
-    id = db.Column(db.Integer, primary_key=True)
-    firstName = db.Column(db.String(80))
-    lastName = db.Column(db.String(80))
-    address = db.Column(db.String(900))
-    isAuthenticated = db.Column(db.Boolean())
-    email = db.Column(db.String(80))
-    def __init__(self, firstName, lastName, address, isAuthenticated, email):
-        self.firstName = firstName
-        self.lastName = lastName
-        self.address = address
-        self.isAuthenticated = isAuthenticated
-        self.email = email
-    def __repr__(self):
-        return '<Name %r>' % self.name
+#class User(db.Model):
+#    __tablename__ = 'users'
+#    id = db.Column(db.Integer, primary_key=True)
+#    firstName = db.Column(db.String(80))
+#    lastName = db.Column(db.String(80))
+#    address = db.Column(db.String(900))
+#    isAuthenticated = db.Column(db.Boolean())
+#    email = db.Column(db.String(80))
+#    def __init__(self, firstName, lastName, address, isAuthenticated, email):
+#        self.firstName = firstName
+#        self.lastName = lastName
+#        self.address = address
+#        self.isAuthenticated = isAuthenticated
+#        self.email = email
+#    def __repr__(self):
+#        return '<Name %r>' % self.name
 
 @app.route('/')
 def home():
